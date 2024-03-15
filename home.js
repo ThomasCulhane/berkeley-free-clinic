@@ -1,15 +1,18 @@
-function traverse(node) {
-  if (node.nodeType == Node.TEXT_NODE) {
-    if (node.textContent.trim().length != 0) {
-      node.textContent = "Hello";
-    }
-  }
-  node.childNodes.forEach((child) => {
-    traverse(child);
-  });
+function translate(lang) {
+  translateNode(lang, document.body)
 }
 
-traverse(document.body);
+function translateNode(lang, node) {
+  if (node.nodeType == Node.TEXT_NODE) {
+    if (node.textContent.trim().length != 0) {
+      let nodeId = node.getAttribute("data-hash-id");
+      node.textContent = translations[nodeId][lang];
+    };
+  }
+  node.childNodes.forEach(child => {
+    translateNode(lang, child);
+  });
+}
 
 function hashCode(str) {
   let hash = 0;
@@ -23,7 +26,9 @@ function hashCode(str) {
   }
   return hash;
 }
-function assignid(node) {
+
+
+function assignId(node) {
   if (node.nodeType === Node.TEXT_NODE) {
     if (node.textContent.trim().length !== 0) {
       const hashedValue = hashCode(node.textContent.trim());
@@ -31,6 +36,6 @@ function assignid(node) {
     }
   }
   node.childNodes.forEach((child) => {
-    assignid(child);
+    assignId(child);
   });
 }
