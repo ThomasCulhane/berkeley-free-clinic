@@ -71,11 +71,11 @@ function handleFileSelect(event) {
 
 function parseCSV(csvData) {
   const lines = csvData.split(/\r?\n/);
-  const headers = lines[0].split(', ');
+  const headers = lines[0].split(',').map(word => word.trim());
   const data = {};
 
   for (let i = 1; i < lines.length; i++) {
-      const values = lines[i].split(', ');
+      const values = lines[i].split(',').map(word => word.trim());
       if (values.length === headers.length) {
           const entry = {};
           for (let j = 0; j < headers.length; j++) {
