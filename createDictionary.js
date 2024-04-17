@@ -5,8 +5,13 @@ const translationJS = `function translate(lang) {
 function translateNode(lang, node) {
   if (node.nodeType == Node.TEXT_NODE) {
     if (node.textContent.trim().length != 0) {
-      let nodeId = node.getAttribute("data-hash-id");
-      node.textContent = translations[nodeId][lang];
+      let nodeId = node.parentElement.getAttribute("data-hash-id");
+      translationItem = translations[nodeId];
+      if(translationItem !== undefined) {
+        node.textContent = translationItem[lang];
+      } else {
+        console.log(node.textContent);
+      }
     };
   }
   node.childNodes.forEach(child => {
@@ -32,13 +37,15 @@ function assignId(node) {
   if (node.nodeType === Node.TEXT_NODE) {
     if (node.textContent.trim().length !== 0) {
       const hashedValue = hashCode(node.textContent.trim());
-      node.setAttribute("data-hash-id", hashedValue);
+      node.parentElement.setAttribute("data-hash-id", hashedValue);
     }
   }
   node.childNodes.forEach((child) => {
     assignId(child);
   });
-}`
+}
+
+document.body.onload = (() => assignId(document.body))`
 
 function processCSV() {
   var csvInputElement = document.createElement('input');
